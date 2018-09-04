@@ -1,23 +1,22 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
+    <m-header></m-header>
+    <m-nav></m-nav>
     <router-view/>
   </div>
 </template>
 
 <script>
+import MHeader from 'components/MHeader/MHeader'
+import MNav from 'components/MNav/MNav'
+
 export default {
-  name: 'App'
+  name: 'App',
+  components:{
+    MHeader,
+    MNav
+  }
 }
 </script>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+<style></style>

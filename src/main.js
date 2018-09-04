@@ -6,6 +6,11 @@ import router from './router'
 
 Vue.config.productionTip = false
 
+// 基础样式
+import "common/css/reset.css"
+import "common/css/bootstrap.min.css"
+import "common/iconfont/iconfont.css"
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
