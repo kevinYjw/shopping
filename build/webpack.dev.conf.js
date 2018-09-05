@@ -13,6 +13,9 @@ const portfinder = require('portfinder')
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
 
+// 模拟数据
+const goods = require("../static/mock/goods.json")
+
 const devWebpackConfig = merge(baseWebpackConfig, {
   module: {
     rules: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap, usePostCSS: true })
@@ -22,6 +25,11 @@ const devWebpackConfig = merge(baseWebpackConfig, {
 
   // these devServer options should be customized in /config/index.js
   devServer: {
+    before(app){ //模拟请求
+      app.get("/goods",function(req,res,next){
+        res.json(goods)
+      })
+    },
     clientLogLevel: 'warning',
     historyApiFallback: {
       rewrites: [
