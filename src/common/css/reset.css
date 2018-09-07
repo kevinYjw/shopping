@@ -24,7 +24,7 @@ body {font-family: Arial, "Microsoft Yahei", "Helvetica Neue", Helvetica, sans-s
 hr {height: .02rem;margin: .1rem 0;border: medium none;border-top: .02rem solid #cacaca;}
 a {color: #25a4bb;text-decoration: none;}
 a:hover{text-decoration: none !important;}
-a:focus{text-decoration: none !important;border:none !important;}
+a:focus{text-decoration: none !important;}
 .clearfix {
 	display: inline-block;
 }

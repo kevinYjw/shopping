@@ -25,17 +25,17 @@ const devWebpackConfig = merge(baseWebpackConfig, {
 
   // these devServer options should be customized in /config/index.js
   devServer: {
-    before(app){ //模拟请求
-      app.get("/goods",function(req,res,next){
-        res.json(goods)
-      })
-    },
-    clientLogLevel: 'warning',
-    historyApiFallback: {
-      rewrites: [
-        { from: /.*/, to: path.posix.join(config.dev.assetsPublicPath, 'index.html') },
-      ],
-    },
+    // before(app){ //模拟请求
+    //   app.get("/goods",function(req,res,next){
+    //     res.json(goods)
+    //   })
+    // },
+    // clientLogLevel: 'warning',
+    // historyApiFallback: {
+    //   rewrites: [
+    //     { from: /.*/, to: path.posix.join(config.dev.assetsPublicPath, 'index.html') },
+    //   ],
+    // },
     hot: true,
     contentBase: false, // since we use CopyWebpackPlugin.
     compress: true,

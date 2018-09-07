@@ -4,7 +4,7 @@
       <div class="commodity-nav">
         <span class="sortby">排序:</span>
         <a href="#" class="item active">默认</a>
-        <a href="#" class="item">价格 <span class="iconfont">&#xe733;</span></a>
+        <a href="#" class="item" @click="sortGoods">价格 <span class="iconfont" v-html="sortImg"></span></a>
       </div>
       <div class="commodity-result">
         <div class="filter">
@@ -16,22 +16,29 @@
             </dd>
           </dl>
         </div>
-        <div class="commodity-list-wrap">
-          <div class="commodity-list">
+        <div class="commodity-list-wrap clearfix">
+          <div class="commodity-list clearfix">
             <ul>
               <li class="col-md-3 col-sm-4 col-xs-1" v-for="(item,index) in goodsList" :index="index">
                 <div class="pic">
-                  <a href="#"><img :src="`/static/${item.prodcutImg}`"></a>
+                  <a href="#"><img v-lazy="`/static/${item.productImage}`"></a>
                 </div>
                 <div class="main">
                   <div class="name">{{item.productName}}</div>
-                  <div class="price">{{item.prodcutPrice}}</div>
+                  <div class="price">{{item.salePrice}}</div>
                   <div class="btn-area">
-                    <a href="#" class="btn btn-red">加入购物车</a>
+                    <a href="#" class="btn btn-red" @click.prevent="addCart(item.productId)">加入购物车</a>
                   </div>
                 </div>
               </li>
             </ul>
+          </div>
+          <div 
+          class="view-more-normal" 
+          v-infinite-scroll="loadMore" 
+          infinite-scroll-disabled="busy" 
+          infinite-scroll-distance="20">
+            <img src="static/loading-spinning-bubbles.svg" alt="" v-if="loading">      
           </div>
         </div>
       </div>
@@ -65,20 +72,74 @@ export default {
           endPrice : '2000.00'
         }
       ],
-      priceChecked: "all"
+      priceChecked:'all',
+      sortFlag: 1,
+      page:1,
+      pageSize:8,
+      busy:true,
+      loading:false,
     }
   },
   methods:{
-    getGoods(){
-      axios.get("/goods").then((res) => {
+    getGoods(flag){
+      let param = {
+        sort:this.sortFlag,
+        page:this.page,
+        pageSize:this.pageSize,
+        priceLevel:this.priceChecked
+      }
+      this.loading = true
+      axios.get("/goods",{
+        params:param
+      }).then((res) => {
+        this.loading = false
         res = res.data
         if(res.status === "0"){
-          this.goodsList = res.result
+          if(flag === true){
+            this.goodsList = this.goodsList.concat(res.result.list)
+            if(res.result.count === 0){
+              this.busy = true
+            } else {
+              this.busy = false
+            }
+          } else {
+            this.goodsList = res.result.list
+            this.busy = false
+          }
         }
       })
     },
     setPriceFilter(value){
       this.priceChecked = value
+      this.page = 1
+      this.getGoods()
+    },
+    sortGoods(){
+      this.sortFlag = this.sortFlag === 1 ? -1 : 1
+      this.page = 1
+      this.getGoods()
+    },
+    loadMore(){
+      this.busy = true
+      setTimeout(() => {
+        this.page++
+        this.getGoods(true)
+      },500)
+    },
+    addCart(productId){
+      axios.post("/goods/addCart",{
+        productId:productId
+      }).then((res) => {
+        res = res.data
+        if(res.status === "0"){
+          alert("doc")
+        }
+      })
+    }
+  },
+  computed:{
+    sortImg(){
+      return this.sortFlag === 1 ? '&#xe733;' : '&#xe735;'
     }
   },
   mounted (){
@@ -186,4 +247,10 @@ export default {
                     cursor: pointer
                     &:hover
                       background:#ffe5e6
+        .view-more-normal
+          width:100px
+          height:120px
+          margin:20px auto
+          overflow:hidden
+          font-size:14px
 </style>
