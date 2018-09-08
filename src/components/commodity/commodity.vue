@@ -42,15 +42,34 @@
           </div>
         </div>
       </div>
+      <div class="warn-model" v-show="warnFlag">
+        <transition name="warn">
+          <warn-model>
+            <template slot="title">
+              <p class="title">你当前尚未登入</p>
+            </template>
+            <template slot="btn">
+              <div class="btn-wrap">
+                <button class="btn-close" @click="Warnclose">关闭</button>
+              </div>
+            </template>
+          </warn-model>
+        </transition>
+      </div>
+      <div class="overlay" v-show="warnFlag"></div>
     </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+import WarnModel from 'src/components/WarnModel/WarnModel'
 
 export default {
   name: 'Commodity',
+  components:{
+    WarnModel
+  },
   data(){
     return {
       goodsList : [],
@@ -78,10 +97,11 @@ export default {
       pageSize:8,
       busy:true,
       loading:false,
+      warnFlag:false, //提示框显示隐藏
     }
   },
   methods:{
-    getGoods(flag){
+    getGoods(flag){ //加载商品列表
       let param = {
         sort:this.sortFlag,
         page:this.page,
@@ -89,7 +109,7 @@ export default {
         priceLevel:this.priceChecked
       }
       this.loading = true
-      axios.get("/goods",{
+      axios.get("/goods/list",{
         params:param
       }).then((res) => {
         this.loading = false
@@ -119,22 +139,29 @@ export default {
       this.page = 1
       this.getGoods()
     },
-    loadMore(){
+    loadMore(){ //滚动
       this.busy = true
       setTimeout(() => {
         this.page++
         this.getGoods(true)
       },500)
     },
-    addCart(productId){
+    addCart(productId){  //添加购物车
       axios.post("/goods/addCart",{
         productId:productId
       }).then((res) => {
         res = res.data
         if(res.status === "0"){
-          alert("doc")
+          alert("添加成功")
+        } else if(res.status === '10001'){
+          this.warnFlag = true
+        } else{
+          alert("添加失败")
         }
       })
+    },
+    Warnclose(){ //提示框关闭
+      this.warnFlag = false
     }
   },
   computed:{
@@ -253,4 +280,12 @@ export default {
           margin:20px auto
           overflow:hidden
           font-size:14px
+    .overlay
+      position:fixed
+      top:0
+      left:0
+      width:100%
+      height:100%
+      background:rgba(0,0,0,0.5)
+      z-index:8
 </style>
