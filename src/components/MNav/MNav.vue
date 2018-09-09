@@ -3,7 +3,7 @@
     <div class="container">
       <div class="nav-main">
         <a href="/">首页</a>
-        <span>商品</span>
+        <span>{{routerName}}</span>
       </div>
     </div>
   </div>
@@ -12,6 +12,28 @@
 <script>
 export default {
   name: 'MNav',
+  data(){
+    return {
+      routerName: 'Home'
+    }
+  },
+  watch:{
+    "$route" : "getPath"
+  },
+  methods:{
+    getPath(){
+      let path = this.$route.path
+      let routerName = path.substr(1)
+      if(path == '/'){
+        this.routerName = 'Home'
+      }else{
+        this.routerName = routerName
+      }
+    }
+  },
+  mounted(){
+    this.getPath()
+  }
 }
 </script>
 

@@ -42,21 +42,28 @@
           </div>
         </div>
       </div>
-      <div class="warn-model" v-show="warnFlag">
-        <transition name="warn">
-          <warn-model>
-            <template slot="title">
-              <p class="title">你当前尚未登入</p>
-            </template>
-            <template slot="btn">
-              <div class="btn-wrap">
-                <button class="btn-close" @click="Warnclose">关闭</button>
-              </div>
-            </template>
-          </warn-model>
-        </transition>
-      </div>
-      <div class="overlay" v-show="warnFlag"></div>
+      <warn-model v-show="warnFlag">
+        <template slot="title">
+          <p class="title">你当前尚未登入</p>
+        </template>
+        <template slot="btn">
+          <div class="btn-wrap">
+            <button class="btn-close" @click="Warnclose">关闭</button>
+          </div>
+        </template>
+      </warn-model>
+      <warn-model v-show="shoppingCartFlag">
+        <template slot="title">
+          <p class="title">成功加入购物车</p>
+        </template>
+        <template slot="btn">
+          <div class="btn-wrap">
+            <button class="btn-close" @click="Warnclose">继续购物</button>
+            <button class="btn-close" @click="enterCart">查看购物车</button>
+          </div>
+        </template>
+      </warn-model>
+      <div class="overlay" v-show="warnFlag || shoppingCartFlag"></div>
     </div>
   </div>
 </template>
@@ -98,6 +105,7 @@ export default {
       busy:true,
       loading:false,
       warnFlag:false, //提示框显示隐藏
+      shoppingCartFlag:false, //购物车提示框
     }
   },
   methods:{
@@ -152,7 +160,7 @@ export default {
       }).then((res) => {
         res = res.data
         if(res.status === "0"){
-          alert("添加成功")
+          this.shoppingCartFlag = true
         } else if(res.status === '10001'){
           this.warnFlag = true
         } else{
@@ -162,6 +170,13 @@ export default {
     },
     Warnclose(){ //提示框关闭
       this.warnFlag = false
+      this.shoppingCartFlag = false
+    },
+    enterCart(){
+      this.$router.push({
+        path: '/cart'
+      })
+      this.Warnclose()
     }
   },
   computed:{

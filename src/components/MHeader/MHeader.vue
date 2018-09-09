@@ -8,7 +8,7 @@
           <div class="menu-item menu-name" v-show="nickName">欢迎你 {{nickName}}</div>
           <div class="menu-item menu-enter" @click="enter" v-show="!nickName">登入</div>
           <div class="menu-item" v-show="nickName" @click="logOut">退出</div>
-          <div class="menu-item menu-shoppong-cart">
+          <div class="menu-item menu-shoppong-cart" @click="enterCart" v-show="nickName">
             <span class="iconfont">&#xe607;</span>
           </div>
         </div>
@@ -29,11 +29,11 @@
                 <ul>
                   <li>
                     <span class="iconfont">&#xe62e;</span>
-                    <input type="text" name="username" placeholder="用户名" autocomplete="off" v-model="userName">
+                    <input type="text" name="username" placeholder="用户名" autocomplete="off" v-model="userName" @keyup.enter="login">
                   </li>
                   <li>
                     <span class="iconfont">&#xe61a;</span>
-                    <input type="text" name="password" placeholder="密码" autocomplete="off" v-model="userPassword">
+                    <input type="text" name="password" placeholder="密码" autocomplete="off" v-model="userPassword" @keyup.enter="login">
                   </li>
                 </ul>
               </div>
@@ -83,7 +83,6 @@ export default {
         password:this.userPassword
       }).then((res) => {
         res = res.data
-        console.log(res.status)
         if(res.status === '0'){
           this.errorTip = false
           this.loginModalFlag = false
@@ -101,7 +100,23 @@ export default {
           this.nickName = ''
         }
       })
+    },
+    checkLogin(){
+      axios.get("/users/checkLogin").then((res) => {
+        res = res.data
+        if(res.status === '0'){
+          this.nickName = res.result
+        }
+      })
+    },
+    enterCart(){
+      this.$router.push({
+        path: '/cart'
+      })
     }
+  },
+  mounted(){
+    this.checkLogin()
   }
 }
 </script>

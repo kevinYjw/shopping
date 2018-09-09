@@ -42,7 +42,15 @@ export default {
           color:#d1434a
           letter-spacing:.25em
           font-weight:700
+          &:first-child
+            margin-right:20px
           &:hover
             background:#ffe5e6
             transition:all 1s ease-out
+          &:nth-child(2n)
+            background:#d1434a
+            color:#fff
+            &:hover
+              background:#f16f75
+              transition:all 1s ease-out
 </style>
