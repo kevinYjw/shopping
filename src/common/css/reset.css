@@ -26,14 +26,3 @@ hr {height: .02rem;margin: .1rem 0;border: medium none;border-top: .02rem solid 
 a {color: #25a4bb;text-decoration: none;}
 a:hover{text-decoration: none !important;}
 a:focus{text-decoration: none !important;}
-.clearfix {
-	display: inline-block;
-}
-.clearfix:after{
-	display: block;
-	content:' ';
-	height:0;
-	line-height: 0;
-	clear:both;
-	visibility: hidden;
-}

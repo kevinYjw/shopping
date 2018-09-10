@@ -53,7 +53,7 @@
           <div class="total">
             金额：<span class="price">{{`￥${totalPrice}`}}</span>
           </div>
-          <div class="btn-wind">结算</div>
+          <div class="btn-wind" :class="{'dis':checkedCount===0}" @click="checkOut">结算</div>
         </div>
       </div>
       <warn-model v-show="deleteFlag">
@@ -175,6 +175,13 @@ export default {
           console.log(res.result)
         }
       })
+    },
+    checkOut(){ //结算
+      if(this.checkedCount >0){
+        this.$router.push({
+          path:'/Address'
+        })
+      }
     }
   },
   components:{
@@ -340,6 +347,16 @@ export default {
           letter-spacing:.50em
           background:#d1434a
           color:#fff
+          &.dis
+            background-color:#ccc
+            color:#fff
+            cursor:default
+            border-color:#ccc
+            &:hover
+              background-color:#ccc
+              color:#fff
+              cursor:default
+              border-color:#ccc
           &:hover
             background:#f16f75
             transition:all .3s ease-out

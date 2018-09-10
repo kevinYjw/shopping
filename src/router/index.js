@@ -5,6 +5,8 @@ Vue.use(Router)
 
 import Commodity from 'components/Commodity/Commodity'
 import ShoppingCart from 'components/shoppingCart/shoppingcart'
+import Address from 'components/address/address'
+import addAddress from 'components/addAddress/addAddress'
 
 export default new Router({
   routes: [
@@ -17,6 +19,16 @@ export default new Router({
       path: '/cart',
       name: 'ShoppingCart',
       component: ShoppingCart
+    },
+    {
+      path: '/Address',
+      name: 'Address',
+      component: Address
+    },
+    {
+      path: '/addAddress',
+      name: 'addAddress',
+      component: addAddress
     }
   ]
 })
