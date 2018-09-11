@@ -289,6 +289,7 @@ export default {
                     overflow:hidden
                     background:#f0f0f0
                     Line-height:30px
+                    cursor:pointer
                   .select-ipt
                     background:none
             .cart-tab-5

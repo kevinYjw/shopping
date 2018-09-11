@@ -10,7 +10,7 @@
             :class="{'check':checkIndex === index}" 
             v-for="(item,index) in addressListFilter" 
             :index="index"
-            @click="checkIndex = index">
+            @click="checkIndex = index;selectedAddress = item.addressId">
               <dl>
                 <dt>{{item.userName}}</dt>
                 <dd class="address-text">{{item.streetName}}</dd>
@@ -48,7 +48,7 @@
         </div>
       </div>
       <div class="next-btn-wrap">
-        <button class="btn">下一步</button>
+        <button class="btn" @click="next">下一步</button>
       </div>
       <warn-model v-show="isMdShow">
         <template slot="title">
@@ -84,7 +84,8 @@ export default {
       checkIndex:0,
       limit:3, //地址一次显示多少条
       isMdShow:false, //提示框是否显示
-      addressId:''
+      addressId:'',
+      selectedAddress:''
     }
   },
   methods:{
@@ -98,6 +99,11 @@ export default {
         }
         if(res.status === '0'){
           this.addressList = res.result
+          this.addressList.forEach((item) => {
+            if(item.isDefault === true){
+              this.selectedAddress = item.addressId
+            }
+          })
         }
       })
     },
@@ -144,6 +150,14 @@ export default {
       this.$router.push({
         path:'/addAddress'
       })
+    },
+    next(){ //下一步
+      this.$router.push({
+        path: '/orderConfirm',
+        query:{
+          'addressId':this.selectedAddress
+        }
+      })
     }
   },
   computed:{
@@ -156,7 +170,7 @@ export default {
       } else {
         return '&#xe735;'
       }
-    }
+    },
   },
   mounted(){
     this.init()

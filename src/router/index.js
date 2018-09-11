@@ -7,6 +7,7 @@ import Commodity from 'components/Commodity/Commodity'
 import ShoppingCart from 'components/shoppingCart/shoppingcart'
 import Address from 'components/address/address'
 import addAddress from 'components/addAddress/addAddress'
+import OrderConfirm from 'components/orderConfirm/orderConfirm'
 
 export default new Router({
   routes: [
@@ -29,6 +30,11 @@ export default new Router({
       path: '/addAddress',
       name: 'addAddress',
       component: addAddress
+    },
+    {
+      path: '/orderConfirm',
+      name: 'orderConfirm',
+      component: OrderConfirm
     }
   ]
 })
