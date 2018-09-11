@@ -114,7 +114,19 @@ export default {
         goodsList:this.checkedList
       }).then((res) => {
         res = res.data
-        console.log(res)
+        if(res.status === '10001'){
+          this.$router.push({
+            path: '/'
+          })
+        }
+        if(res.status === '0'){
+          this.$router.push({
+            path: '/orderSuccess',
+            query:{
+              'orderId':res.result.orderId
+            }
+          })
+        }
       })
     }
   },
