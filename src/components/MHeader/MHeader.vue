@@ -9,6 +9,7 @@
           <div class="menu-item menu-enter" @click="enter" v-show="!nickName">登入</div>
           <div class="menu-item" v-show="nickName" @click="logOut">退出</div>
           <div class="menu-item menu-shoppong-cart" @click="enterCart" v-show="nickName">
+            <span class="navbar-cart-count" v-show="cartCount>0">{{cartCount}}</span>
             <span class="iconfont">&#xe607;</span>
           </div>
         </div>
@@ -51,9 +52,16 @@
 
 <script>
 import axios from 'axios'
+import {mapGetters,mapMutations} from 'vuex'
 
 export default {
   name: 'MHeader',
+  computed:{
+    ...mapGetters([
+      'nickName',
+      'cartCount'
+    ]),
+  },
   data(){
     return {
       loginModalFlag:false, //登入框显示隐藏
@@ -61,7 +69,7 @@ export default {
       errorText:'用户名或密码错误',
       userName:'',
       userPassword:'',
-      nickName: ''
+      // nickName: ''
     }
   },
   methods:{
@@ -86,7 +94,9 @@ export default {
         if(res.status === '0'){
           this.errorTip = false
           this.loginModalFlag = false
-          this.nickName = res.result.userName
+          this.setNickName(res.result.userName)
+          this.getCartCount()
+          // this.nickName = res.result.userName
         }else{
           this.errorText = '用户名或密码错误'
           this.errorTip = true
@@ -97,7 +107,8 @@ export default {
       axios.post("/users/logout").then((res) => {
         res = res.data
         if(res.status === '0'){
-          this.nickName = ''
+          this.setNickName('')
+          // this.nickName = ''
         }
       })
     },
@@ -105,7 +116,8 @@ export default {
       axios.get("/users/checkLogin").then((res) => {
         res = res.data
         if(res.status === '0'){
-          this.nickName = res.result
+          this.setNickName(res.result)
+          this.getCartCount()
         }
       })
     },
@@ -113,7 +125,19 @@ export default {
       this.$router.push({
         path: '/cart'
       })
-    }
+    },
+    getCartCount(){ //获取购物车中的数量
+      axios.get("/users/getCartCount").then((res) => {
+        res = res.data
+        if(res.status === '0'){
+          this.initCartCount(res.result.cartCount)
+        }
+      })
+    },
+    ...mapMutations({
+      setNickName:'SET_NICKNAME',
+      initCartCount:'INIT_CARTCOUNT'
+    })
   },
   mounted(){
     this.checkLogin()
@@ -156,8 +180,21 @@ export default {
             font-size:14px
             font-weight:600
           .menu-shoppong-cart
+            position:relative
             span
               font-size:25px
+            .navbar-cart-count
+              position:absolute
+              top:-5px
+              right:-9px
+              width:20px
+              background:#eb767b
+              font-size:16px
+              font-weight:700
+              color:#fff
+              border-radius:50%
+              text-align:center
+              letter-spacing:0px
     .md-enter
       position:fixed
       left:50%

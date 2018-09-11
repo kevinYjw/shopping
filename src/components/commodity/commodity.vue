@@ -71,6 +71,7 @@
 <script>
 import axios from 'axios'
 import WarnModel from 'src/components/WarnModel/WarnModel'
+import {mapMutations} from 'vuex'
 
 export default {
   name: 'Commodity',
@@ -161,6 +162,7 @@ export default {
         res = res.data
         if(res.status === "0"){
           this.shoppingCartFlag = true
+          this.setCartCount(1)
         } else if(res.status === '10001'){
           this.warnFlag = true
         } else{
@@ -177,7 +179,10 @@ export default {
         path: '/cart'
       })
       this.Warnclose()
-    }
+    },
+    ...mapMutations({
+      setCartCount:'SET_CARTCOUNT'
+    })
   },
   computed:{
     sortImg(){

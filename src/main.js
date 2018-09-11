@@ -5,6 +5,7 @@ import App from './App'
 import router from './router'
 import infiniteScroll from 'vue-infinite-scroll'
 import VueLazyLoad from 'vue-lazyload'
+import store from './store'
 
 Vue.use(infiniteScroll)
 Vue.use(VueLazyLoad,{
@@ -23,6 +24,7 @@ import "common/iconfont/iconfont.css"
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>',
   directives: {infiniteScroll}

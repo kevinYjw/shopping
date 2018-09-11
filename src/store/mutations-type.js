@@ -1,0 +1,5 @@
+export const SET_NICKNAME = 'SET_NICKNAME'
+
+export const SET_CARTCOUNT = "SET_CARTCOUNT"
+
+export const INIT_CARTCOUNT = "INIT_CARTCOUNT"

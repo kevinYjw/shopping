@@ -36,7 +36,7 @@
               </div>
               <div class="cart-tab-4">{{'￥' + (item.salePrice * item.productNum)}}</div>
               <div class="cart-tab-5">
-                <div class="opration" @click="deleteModel(item.productId)"><span class="iconfont">&#xe609;</span></div>
+                <div class="opration" @click="deleteModel(item)"><span class="iconfont">&#xe609;</span></div>
               </div>
             </li>
           </ul>
@@ -75,6 +75,7 @@
 <script>
 import axios from 'axios'
 import WarnModel from 'src/components/WarnModel/WarnModel'
+import {mapMutations} from 'vuex'
 
 export default {
   name: 'ShoppingCart',
@@ -82,7 +83,8 @@ export default {
     return {
       cartList:[],
       deleteFlag:false, //删除框显示隐藏
-      productId:''
+      productId:'',
+      delItem:''
     }
   },
   computed:{
@@ -117,14 +119,15 @@ export default {
             path:'/'
           })
         }
-        if(res.status === '1'){
+        if(res.status === '0'){
           this.cartList = res.result
         }
       })
     },
-    deleteModel(productId){ //删除框显示
+    deleteModel(item){ //删除框显示
       this.deleteFlag = true
-      this.productId = productId
+      this.delItem = item
+      this.productId = item.productId
     },
     Warnclose(){
       axios.post('/users/cartDel',{
@@ -133,6 +136,8 @@ export default {
         res = res.data
         if(res.status === '0'){
           this.enterCart()
+          let delCount = parseInt(this.delItem.productNum)
+          this.setCartCount(-delCount)
           this.init()
         }
       })
@@ -147,7 +152,7 @@ export default {
         }
         item.productNum++
       } else if(flag === 'sub'){
-        if(item.productNum <= 1){
+        if(item.productNum <= 0){
           return
         }
         item.productNum--
@@ -160,6 +165,10 @@ export default {
         checked:item.checked
       }).then((res) => {
         res = res.data
+        if(res.status === '0'){
+          let count = flag === 'add' ? 1 : -1
+          this.setCartCount(count)
+        }
       })
     },
     toggleCheckAll(){ //全选是否选中
@@ -182,7 +191,10 @@ export default {
           path:'/Address'
         })
       }
-    }
+    },
+    ...mapMutations({
+      setCartCount:'SET_CARTCOUNT'
+    })
   },
   components:{
     WarnModel
