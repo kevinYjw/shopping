@@ -91,7 +91,7 @@ export default {
             path:'/'
           })
         }
-        if(res.status === '1'){
+        if(res.status === '0'){
           this.cartList = res.result
           this.cartList.forEach((item) => {
             if(item.checked === '1'){

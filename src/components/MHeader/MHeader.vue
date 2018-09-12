@@ -7,6 +7,7 @@
         <div class="menu">
           <div class="menu-item menu-name" v-show="nickName">欢迎你 {{nickName}}</div>
           <div class="menu-item menu-enter" @click="enter" v-show="!nickName">登入</div>
+          <div class="menu-item menu-enter" @click="register" v-show="!nickName">注册</div>
           <div class="menu-item" v-show="nickName" @click="logOut">退出</div>
           <div class="menu-item menu-shoppong-cart" @click="enterCart" v-show="nickName">
             <span class="navbar-cart-count" v-show="cartCount>0">{{cartCount}}</span>
@@ -132,6 +133,11 @@ export default {
         if(res.status === '0'){
           this.initCartCount(res.result.cartCount)
         }
+      })
+    },
+    register(){ //注册
+      this.$router.push({
+        path:'/register'
       })
     },
     ...mapMutations({

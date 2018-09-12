@@ -9,6 +9,7 @@ import Address from 'components/address/address'
 import addAddress from 'components/addAddress/addAddress'
 import OrderConfirm from 'components/orderConfirm/orderConfirm'
 import OrderSuccess from 'components/orderSuccess/orderSuccess'
+import Register from 'components/register/register'
 
 export default new Router({
   routes: [
@@ -41,6 +42,11 @@ export default new Router({
       path: '/orderSuccess',
       name: 'OrderSuccess',
       component: OrderSuccess
+    },
+    {
+      path: '/register',
+      name: 'Register',
+      component:Register
     }
   ]
 })
